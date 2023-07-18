@@ -1,0 +1,12 @@
+---
+type: object
+properties:
+  email:
+    type: string
+    description: Users login email
+  password:
+    type: string
+    description: Users login password
+required:
+  - email
+  - password

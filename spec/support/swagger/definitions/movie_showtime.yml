@@ -1,0 +1,15 @@
+---
+type: object
+properties:
+  movie_id:
+    type: integer
+    description: Movie ID
+  showtime:
+    type: string
+    description: Date and time when the movie starts
+  ticket_price_pennies:
+    type: integer
+    description: Ticket price in pennies
+required:
+  - movie_id
+  - showtime

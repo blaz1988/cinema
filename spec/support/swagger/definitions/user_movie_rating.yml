@@ -1,0 +1,12 @@
+---
+type: object
+properties:
+  movie_id:
+    type: integer
+    description: Movie ID
+  rating:
+    type: integer
+    description: Movie rating (1 - 5)
+required:
+  - movie_id
+  - rating

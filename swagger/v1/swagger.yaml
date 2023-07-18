@@ -1,0 +1,289 @@
+---
+swagger: '2.0'
+info:
+  title: Cinema API V1
+  version: v1
+components:
+  movie_showtime:
+    type: object
+    properties:
+      movie_id:
+        type: integer
+        description: Movie ID
+      showtime:
+        type: string
+        description: Date and time when the movie starts
+      ticket_price_pennies:
+        type: integer
+        description: Ticket price in pennies
+    required:
+    - movie_id
+    - showtime
+  user:
+    type: object
+    properties:
+      email:
+        type: string
+        description: Users login email
+      password:
+        type: string
+        description: Users login password
+    required:
+    - email
+    - password
+  user_movie_rating:
+    type: object
+    properties:
+      movie_id:
+        type: integer
+        description: Movie ID
+      rating:
+        type: integer
+        description: Movie rating (1 - 5)
+    required:
+    - movie_id
+    - rating
+paths:
+  "/api/v1/authentications/sign_in":
+    post:
+      summary: create user session
+      consumes:
+      - application/json
+      parameters:
+      - name: params
+        in: body
+        required: true
+        schema:
+          "$ref": "#/components/user"
+      responses:
+        '200':
+          description: created
+          headers:
+            access-token:
+              type: string
+              description: Authorizations token
+            token-type:
+              type: string
+              description: Token type
+            client:
+              type: string
+              description: Client token
+            expiry:
+              type: string
+              description: Token expiration time
+            ETag:
+              type: string
+              description: Web cache validation
+        '401':
+          description: nvalid login credentials
+  "/api/v1/movie_showtimes":
+    get:
+      summary: list movie_showtimes
+      security:
+      - accessToken: []
+        tokenType: []
+        client: []
+        expiry: []
+        uid: []
+      responses:
+        '200':
+          description: successful
+    post:
+      summary: create movie_showtime
+      consumes:
+      - application/json
+      parameters:
+      - name: params
+        in: body
+        required: true
+        schema:
+          "$ref": "#/components/movie_showtime"
+      security:
+      - accessToken: []
+        tokenType: []
+        client: []
+        expiry: []
+        uid: []
+      responses:
+        '201':
+          description: created
+        '422':
+          description: validation error
+  "/api/v1/movie_showtimes/{id}":
+    parameters:
+    - name: id
+      in: path
+      type: string
+      description: id
+      required: true
+    get:
+      summary: show movie_showtime
+      security:
+      - accessToken: []
+        tokenType: []
+        client: []
+        expiry: []
+        uid: []
+      responses:
+        '200':
+          description: successful
+    patch:
+      summary: update movie_showtime
+      consumes:
+      - application/json
+      parameters:
+      - name: params
+        in: body
+        required: true
+        schema:
+          "$ref": "#/components/movie_showtime"
+      security:
+      - accessToken: []
+        tokenType: []
+        client: []
+        expiry: []
+        uid: []
+      responses:
+        '200':
+          description: successful
+        '422':
+          description: validation error
+    put:
+      summary: update movie_showtime
+      consumes:
+      - application/json
+      parameters:
+      - name: params
+        in: body
+        required: true
+        schema:
+          "$ref": "#/components/movie_showtime"
+      security:
+      - accessToken: []
+        tokenType: []
+        client: []
+        expiry: []
+        uid: []
+      responses:
+        '200':
+          description: successful
+    delete:
+      summary: delete movie_showtime
+      security:
+      - accessToken: []
+        tokenType: []
+        client: []
+        expiry: []
+        uid: []
+      responses:
+        '204':
+          description: deleted
+  "/api/v1/movies":
+    get:
+      summary: list movies
+      security:
+      - accessToken: []
+        tokenType: []
+        client: []
+        expiry: []
+        uid: []
+      responses:
+        '200':
+          description: successful
+  "/api/v1/movies/{id}":
+    parameters:
+    - name: id
+      in: path
+      type: string
+      description: id
+      required: true
+    get:
+      summary: show movie
+      security:
+      - accessToken: []
+        tokenType: []
+        client: []
+        expiry: []
+        uid: []
+      responses:
+        '200':
+          description: successful
+  "/api/v1/user_movie_ratings":
+    post:
+      summary: create user_movie_rating
+      consumes:
+      - application/json
+      parameters:
+      - name: params
+        in: body
+        required: true
+        schema:
+          "$ref": "#/components/user_movie_rating"
+      security:
+      - accessToken: []
+        tokenType: []
+        client: []
+        expiry: []
+        uid: []
+      responses:
+        '201':
+          description: created
+        '422':
+          description: validation error
+  "/api/v1/user_movie_ratings/{id}":
+    patch:
+      summary: update user_movie_rating
+      consumes:
+      - application/json
+      parameters:
+      - name: params
+        in: body
+        required: true
+        schema:
+          "$ref": "#/components/user_movie_rating"
+      - name: id
+        in: path
+        type: string
+        description: id
+        required: true
+      security:
+      - accessToken: []
+        tokenType: []
+        client: []
+        expiry: []
+        uid: []
+      responses:
+        '200':
+          description: successful
+        '422':
+          description: validation error
+servers:
+- url: http://{defaultHost}
+  variables:
+    defaultHost:
+      default: localhost:3000
+securityDefinitions:
+  accessToken:
+    description: Access Token
+    type: apiKey
+    name: access-token
+    in: header
+  tokenType:
+    name: token-type
+    type: apiKey
+    in: header
+  client:
+    description: Client side token
+    type: apiKey
+    name: client
+    in: header
+  expiry:
+    description: Acces token expiration
+    type: apiKey
+    name: expiry
+    in: header
+  uid:
+    description: User email
+    type: apiKey
+    name: uid
+    in: header
